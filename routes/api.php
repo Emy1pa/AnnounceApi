@@ -41,6 +41,14 @@ Route::group([
     Route::get('announcements/{id}/edit', [AnnouncementController::class, 'edit']);
     Route::put('announcements/{id}/edit', [AnnouncementController::class, 'update']);
     Route::delete('announcements/{id}/delete', [AnnouncementController::class, 'destroy']);
+    Route::post('announcements/{id}/apply', [AnnouncementController::class, 'apply']);
+});
+Route::middleware('auth:api')->group(function () {
+    
+    Route::put('/applications/{applicationId}/accept', [AnnouncementController::class, 'acceptApplication']);
+    Route::put('/applications/{applicationId}/reject', [AnnouncementController::class, 'rejectApplication']);
+    Route::get('/user/applications', [AnnouncementController::class, 'userApplications']);
+
 });
 
 

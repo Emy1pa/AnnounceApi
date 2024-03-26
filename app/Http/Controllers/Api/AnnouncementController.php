@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Application;
 use App\Models\Announcement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -204,5 +205,101 @@ class AnnouncementController extends Controller
             }
     
         }
+
+
+        // APPLY FOR AN ANNOUNCEMENT
+
+        public function apply(Request $request, $id){
+            $validator = Validator::make($request->all(),[
+                'message' => 'required|string|max:255',
+                'required_skills' => 'required|array'
+            ]);
+
+            if($validator->fails()){
+                return response()->json([
+                    'status' => 422,
+                    'errors' => $validator->messages()
+                ], 422);
+            }
+            // if announcement exists
+            $announcement = Announcement::find($id);
+            if (!$announcement) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Announcement not found'
+                ], 404);
+            }
+            $application = new Application();
+            $application->announcement_id = $id;
+            $application->volunteer_id = auth()->id();
+            $application->message = $request->message;
+            $application->required_skills = $announcement->required_skills;
+            $application->save();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Application submitted successfully'
+            ], 200);
+        }
+
+        public function acceptApplication($applicationId){
+            $user = auth()->user();
+                if (!$user || $user->role !== 'organizer') {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Only organizers can accept applications'
+            ], 403); 
+            }
+            $application = Application::findOrFail($applicationId);
+            $application->update(['status' => 'accepted']);
+
+            return response()->json([
+                 'status' => 200,
+                 'message' => 'Application accepted successfully'
+            ], 200);
+        }
+
+        public function rejectApplication($applicationId) {
+            $user = auth()->user();
+            if (!$user || $user->role !== 'organizer') {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Only organizers can reject applications'
+                ], 403); 
+            }
+            $application = Application::findOrFail($applicationId);
+
+    
+            $application->update(['status' => 'rejected']);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Application rejected successfully'
+            ], 200);
+        }
+        public function userApplications()
+    {
+        $user = auth()->user();
+        
+        if ($user && $user->role === 'volunteer') {
+            $applications = Application::where('volunteer_id', $user->id)->get();
+            
+            if ($applications->count() > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'applications' => $applications
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No applications found for the authenticated user'
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'status' => 403,
+                'message' => 'Only volunteers can access their applications'
+            ], 403);
+        }
+    }
 
 }
