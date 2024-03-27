@@ -1,0 +1,442 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ANNOUNCE API",
+        "description": "L5 Swagger OpenApi description",
+        "contact": {
+            "email": "souaouti@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/announcement": {
+            "post": {
+                "tags": [
+                    "announcements"
+                ],
+                "summary": "Create a new announcement",
+                "operationId": "store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "Announcement title",
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "description": "Announcement type",
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "description": "Announcement date",
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "description": {
+                                        "description": "Announcement description",
+                                        "type": "string"
+                                    },
+                                    "location": {
+                                        "description": "Announcement location",
+                                        "type": "string"
+                                    },
+                                    "required_skills": {
+                                        "description": "Announcement required skills",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Announcement created successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/announcements": {
+            "get": {
+                "tags": [
+                    "announcements"
+                ],
+                "summary": "Get all announcements",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/api/announcements/{id}": {
+            "get": {
+                "tags": [
+                    "announcements"
+                ],
+                "summary": "Get a specific announcement",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the announcement",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Announcement not found"
+                    }
+                }
+            }
+        },
+        "/api/announcements/{id}/edit": {
+            "get": {
+                "tags": [
+                    "announcements"
+                ],
+                "summary": "Edit a specific announcement",
+                "operationId": "edit",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the announcement",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Announcement not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "announcements"
+                ],
+                "summary": "Update a specific announcement",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the announcement",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Announcement updated successfully"
+                    },
+                    "404": {
+                        "description": "Announcement not found"
+                    }
+                }
+            }
+        },
+        "/api/announcements/{id}/delete": {
+            "delete": {
+                "tags": [
+                    "announcements"
+                ],
+                "summary": "Delete a specific announcement",
+                "operationId": "destroy",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the announcement",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Announcement deleted successfully"
+                    },
+                    "404": {
+                        "description": "Announcement not found"
+                    }
+                }
+            }
+        },
+        "/api/applications/{applicationId}/accept": {
+            "put": {
+                "tags": [
+                    "applications"
+                ],
+                "summary": "Accept a specific application",
+                "operationId": "acceptApplication",
+                "parameters": [
+                    {
+                        "name": "applicationId",
+                        "in": "path",
+                        "description": "ID of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Application accepted successfully"
+                    },
+                    "403": {
+                        "description": "Forbidden: Only organizers can accept applications"
+                    },
+                    "404": {
+                        "description": "Application not found"
+                    }
+                }
+            }
+        },
+        "/api/applications/{applicationId}/reject": {
+            "put": {
+                "tags": [
+                    "applications"
+                ],
+                "summary": "Reject a specific application",
+                "operationId": "rejectApplication",
+                "parameters": [
+                    {
+                        "name": "applicationId",
+                        "in": "path",
+                        "description": "ID of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Application rejected successfully"
+                    },
+                    "403": {
+                        "description": "Forbidden: Only organizers can reject applications"
+                    },
+                    "404": {
+                        "description": "Application not found"
+                    }
+                }
+            }
+        },
+        "/api/user/applications": {
+            "get": {
+                "tags": [
+                    "applications"
+                ],
+                "summary": "Get applications for the authenticated user",
+                "operationId": "userApplications",
+                "responses": {
+                    "403": {
+                        "description": "Forbidden: Only volunteers can access their applications"
+                    },
+                    "404": {
+                        "description": "No applications found for the authenticated user"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/registeer": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Register a new user",
+                "description": "Register a new user with the specified name, email, password, and role.",
+                "operationId": "register",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "User's name",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "User's email",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "User's password",
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "role": {
+                                        "description": "User's role (organizer or volunteer)",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User registered successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login",
+                "description": "Login with the specified email and password.",
+                "operationId": "login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "User's email",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "User's password",
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User logged in successfully"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Get user profile",
+                "description": "Get the profile of the authenticated user.",
+                "operationId": "profile",
+                "responses": {
+                    "200": {
+                        "description": "User profile retrieved successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/refresh": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Refresh authentication token",
+                "description": "Refresh the authentication token of the authenticated user.",
+                "operationId": "refreshToken",
+                "responses": {
+                    "200": {
+                        "description": "Token refreshed successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/logout": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Logout",
+                "description": "Logout the authenticated user.",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "User logged out successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    }
+}

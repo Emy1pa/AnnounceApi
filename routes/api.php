@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AnnouncementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
+use Spatie\FlareClient\Api;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,5 +51,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/user/applications', [AnnouncementController::class, 'userApplications']);
 
 });
+
+// Route::get('/announcements', [AnnouncementController::class, 'index']);
+
 
 
