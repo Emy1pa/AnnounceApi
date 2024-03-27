@@ -8,7 +8,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
-class ApiController   extends Controller
+class ApiController extends Controller
 {
     /**
      * @OA\Post(
